@@ -3,7 +3,6 @@ use serde::{Serialize, Deserialize};
 
 pub const NODE_DEFAULT_ADDRESS: &str = "127.0.0.1";
 pub const NODE_DEFAULT_PORT: u16 = 5954;
-pub const NODE_DEFAULT_DEBUG: bool = false;
 pub const NODE_DEFAULT_DIR_DATA: &str = "/tmp/blockchain";
 pub const BLOCK_REWARD: u64 = 100;
 
@@ -17,7 +16,6 @@ pub type TIMESTAMP = u64;
 pub struct CLIConfiguration {
     pub port: u16,
     pub host: String,
-    pub debug: bool,
     pub workdir: String,
 }
 

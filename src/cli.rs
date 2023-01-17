@@ -5,7 +5,6 @@ pub fn init_cli_processor() -> models::CLIConfiguration {
     let mut configuration = models::CLIConfiguration {
         port: models::NODE_DEFAULT_PORT,
         host: models::NODE_DEFAULT_ADDRESS.to_string(),
-        debug: models::NODE_DEFAULT_DEBUG,
         workdir: models::NODE_DEFAULT_DIR_DATA.to_string(),
     };
 
@@ -30,9 +29,6 @@ pub fn init_cli_processor() -> models::CLIConfiguration {
                 if i + 1 < args.len() {
                     configuration.workdir = args[i + 1].clone();
                 }
-            }
-            "--debug" => {
-                configuration.debug = true;
             }
             _ => {}
         }
