@@ -34,13 +34,13 @@ nonce format `random-u64.random-u64` = block hash in sha256
 Return hash to find nonce
 ```js
 Method: GET
-<address>:<port>/hash
+Endpoint: /hash
 ```
 
 When you find the nonce, validate the block:
 ```js
 Method: POST
-<address>:<port>/validate
+Endpoint: /validate
 Body-Type: text/plain
 Body: <your-nonce>
 ```
@@ -48,7 +48,7 @@ Body: <your-nonce>
 To add transaction to the last unconfirmed block (unconfirmed transactions):
 ```js
 Method: POST
-<address>:<port>/send
+Endpoint: /send
 Body-Type: json
 Body: {
     sender: <string>
@@ -60,17 +60,17 @@ Body: {
 Get block data:
 ```js
 Method: GET
-<address>:<port>/get/block?id=<block-id>
+Endpoint: /get/block?id=<block-id>
 ```
 
 Get last block data:
 ```js
 Method: GET
-<address>:<port>/get/lastblock
+Endpoint: /get/lastblock
 ```
 
 Get unconfirmed transactions:
 ```js
 Method: GET
-<address>:<port>/get/unconfirmedtransactions
+Endpoint: /get/unconfirmedtransactions
 ```
