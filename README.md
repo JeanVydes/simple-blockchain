@@ -29,7 +29,7 @@ cargo run -- --host <port> --port <port> --workdir <workdir> --debug
 
 Access via HTTP
 
-nonce format `random-u64.random-u64` = block hash
+nonce format `random-u64.random-u64` = block hash in sha256
 
 Return hash to find nonce
 ```js
