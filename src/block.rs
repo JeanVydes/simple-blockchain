@@ -16,7 +16,32 @@ pub fn register_block_locally(workdir: String, block: models::Block) -> std::io:
     Ok(())
 }
 
-pub fn get_newest_block(folder: &Path) -> Option<Block> {
+pub fn get_block_by_index(index: u64, workdir: &Path) -> std::io::Result<Block> {
+    let raw_file_path = format!("{}/{}.block", workdir.to_string_lossy(), index);
+    let raw_file = std::fs::File::open(raw_file_path)?;
+    let mut reader = std::io::BufReader::new(raw_file);
+    let bson_doc = bson::Document::from_reader(&mut reader);
+
+    // shit code
+    match bson_doc {
+        Ok(doc) => {
+            let raw_block = bson::from_document(doc);
+            match raw_block {
+                Ok(block) => {
+                    return Ok(block);
+                },
+                Err(e) => {
+                    return Err(std::io::Error::new(std::io::ErrorKind::Other, e));
+                }
+            }
+        },
+        Err(e) => {
+            return Err(std::io::Error::new(std::io::ErrorKind::Other, e));
+        }
+    }
+}
+
+pub fn get_newest_block(folder: &Path) -> std::io::Result<Block> {
     if folder.is_dir() {
         let mut newest_file = None;
         let mut newest_time = SystemTime::UNIX_EPOCH;
@@ -39,13 +64,18 @@ pub fn get_newest_block(folder: &Path) -> Option<Block> {
                 let genesis_block_file = std::fs::File::open(path).unwrap();
                 let mut reader = std::io::BufReader::new(genesis_block_file);
                 let bson_doc = bson::Document::from_reader(&mut reader).unwrap();
-                let raw_block: models::Block = bson::from_document(bson_doc).unwrap();
-                
-                return Some(raw_block);
+                let result = bson::from_document(bson_doc);
+                match result {
+                    Ok(block) => Ok(block),
+                    Err(e) => {
+                        println!("Error: {}", e);
+                        Err(std::io::Error::new(std::io::ErrorKind::Other, e))
+                    }
+                }
             },
-            None => return None
+            None => return Err(std::io::Error::new(std::io::ErrorKind::Other, "No blocks found")),
         }
     }else {
-        None
+        return Err(std::io::Error::new(std::io::ErrorKind::Other, "No blocks found"));
     }
 }

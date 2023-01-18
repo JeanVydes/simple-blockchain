@@ -1,6 +1,8 @@
 use std::default::Default;
 use serde::{Serialize, Deserialize};
 
+use crate::logger;
+
 pub const NODE_DEFAULT_ADDRESS: &str = "127.0.0.1";
 pub const NODE_DEFAULT_PORT: u16 = 5954;
 pub const NODE_DEFAULT_DIR_DATA: &str = "/tmp/blockchain";
@@ -17,6 +19,7 @@ pub struct CLIConfiguration {
     pub port: u16,
     pub host: String,
     pub workdir: String,
+    pub log: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -56,6 +59,8 @@ pub struct Runtime {
     pub uncofirmed_transactions: Vec<Transaction>,
     pub current_hash: Box<HASH>,
     pub last_block: Block,
+    pub logger: logger::Logger,
+    pub debug: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -75,7 +80,7 @@ pub struct TransactionClientPayload {
 
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct NodeServerPayload {
+pub struct NodeServerPayload<T> where T: Serialize {
     pub message: String,
-    pub data: String,
+    pub data: T,
 }

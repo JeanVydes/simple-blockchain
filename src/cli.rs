@@ -6,6 +6,7 @@ pub fn init_cli_processor() -> models::CLIConfiguration {
         port: models::NODE_DEFAULT_PORT,
         host: models::NODE_DEFAULT_ADDRESS.to_string(),
         workdir: models::NODE_DEFAULT_DIR_DATA.to_string(),
+        log: false,
     };
 
     for (i, argument) in args.iter().enumerate() {
@@ -29,6 +30,9 @@ pub fn init_cli_processor() -> models::CLIConfiguration {
                 if i + 1 < args.len() {
                     configuration.workdir = args[i + 1].clone();
                 }
+            }
+            "--debug" => {
+                configuration.log = true;
             }
             _ => {}
         }

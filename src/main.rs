@@ -3,6 +3,7 @@ mod core;
 mod cli;
 mod block;
 mod hash;
+mod logger;
 
 fn main() {
     match core::init() {
