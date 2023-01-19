@@ -115,11 +115,11 @@ impl Service for models::Runtime {
                 request.as_reader().read_to_string(&mut body)?;
                 let body = body.trim();
                 let mut hasher = Sha256::new();
-                hasher.update(body);
+                hasher.update(body.clone());
                 let result = hasher.finalize();
     
                 if result.to_vec() == self.get_current_hash().clone().as_ref().as_slice() {
-                    self.validate_current("".to_string(), "".to_string())?;
+                    self.validate_current("".to_string(), body.to_string())?;
                     let payload = models::NodeServerPayload {
                         message: "validated".to_string(),
                         data: self.last_block.clone(),
